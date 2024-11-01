@@ -61,4 +61,4 @@ Github Link: https://github.com/ActuallyStrez/strez-tsunami
 
 P.S. Thank you for all the love and support given for this script. Strez
 
-Thanks from the follOwing Developers: Skye - Tofu - JSON-135
+Thanks from the following Developers: Skye - Tofu - JSON-135
