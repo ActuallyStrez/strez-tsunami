@@ -3,36 +3,43 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'QB Tsunami'
-name 'qb-tsunami'
-developer 'ActuallyStrez, Sky, Tofu, QBCore'
-version 'V3.5'
+description 'Strez Tsunami'
+name 'strez-tsunami'
+developer 'ActuallyStrez, Sky, Tofu, JSON-135, QBCore'
+version '4.0'
 lua54 'yes'
 
-files {
-	'flood.xml'
-}
-
-data_file 'WATER_FILE' 'flood.xml'
-
 shared_scripts {
-    'config.lua',
+    'Config.lua',
     '@ox_lib/init.lua'
 }
 
-
 client_scripts {
-    'client/main.lua'
+    'Client.lua'
 }
 
 server_scripts {
-    'server/main.lua'
+    'Server.lua'
 }
 
+files {
+	'Water/CalmFlood.xml',
+    'Water/CalmWater.xml',
+    'Water/WaveyFlood.xml',
+    'Water/WaveyWater.xml'
+}
+
+data_file 'CALMFLOOD_FILE' 'CalmFlood.xml'
+data_file 'CALMWATER_FILE' 'CalmWater.xml'
+data_file 'WAVEYFLOOD_FILE' 'WaveyFlood.xml'
+data_file 'WAVEYWATER_FILE' 'WaveyWater.xml'
+
 escrow_ignore {
-    'config.lua',
-    'flood.xml',
-    'water.xml',
-    'client/main.lua',
-    'server/main.lua',
+    'Config.lua',
+    'Client.lua',
+    'Server.lua',
+	'CalmFlood.xml',
+    'CalmWater.xml',
+    'WaveyFlood.xml',
+    'WaveyWater.xml'
 }

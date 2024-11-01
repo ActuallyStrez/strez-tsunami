@@ -1,14 +1,8 @@
 -------------------- Strez Tsunami --------------------
 local QBCore = exports['qb-core']:GetCoreObject()
 
-AddEventHandler('onClientResourceStart', function(resourceName)
-    if (GetCurrentResourceName() ~= resourceName) then
-        return
-    end
-    local success = LoadWaterFromPath(GetCurrentResourceName(), 'flood.xml')
-    local waterQuadCount = GetWaterQuadCount()
-    local calmingQuadCount = GetCalmingQuadCount()
-    local waveQuadCount = GetWaveQuadCount()
+RegisterCommand('resetwater', function(source, args)
+    ResetWater()
 end)
 
 -------------------- Gloabl Player Emails --------------------
@@ -37,7 +31,7 @@ RegisterNetEvent('strez:client:SendEmergencyEmail', function(text)
         message = text,
         button = {}
     })
-    end 
+    end
 end)
 
 -- Announcement Email
@@ -64,7 +58,7 @@ RegisterNetEvent('strez:client:SendAnnouncementEmail', function(text)
         message = text,
         button = {}
     })
-    end 
+    end
 end)
 
 -------------------- Manual Tsunami Restart --------------------
@@ -73,7 +67,7 @@ end)
 RegisterNetEvent('strez:client:TsunamiManual', function(text)
     local message = 'The National Weather Service has issued a TSUNAMI WARNING for Los Santos, In 15 minutes! Please start heading home or somewhere local for SAFETY!',
     Wait(math.random(5000, 15000))
-    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.1)
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.2)
     Wait(math.random(5000, 15000))
     if Config.Notify == 'qb' then
         TriggerEvent('QBCore:Notify', message, 'success', 15000)
@@ -82,33 +76,57 @@ RegisterNetEvent('strez:client:TsunamiManual', function(text)
     elseif Config.Notify == 'email' then
         if Config.Phone == 'qb' then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'qs' then
             TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'gks' then
             TriggerServerEvent('gksphone:NewMail', {
-            sender = "District of Los Santos",
-            subject = "Emergency Broadcast",
-            message = message,
-            button = {}
-        })
+                sender = "City of Los Santos",
+                subject = "Emergency Broadcast",
+                message = message,
+                button = {}
+            })
         end
     end
     Wait(math.random(5000, 15000))
     TriggerServerEvent('qb-weathersync:server:setWeather', 'THUNDER')
     Wait(math.random(5000, 15000))
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'AirSiren', 0.5)
     TriggerEvent('strez:raisewater')
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    end
     Wait(math.random(5000, 15000))
     TriggerServerEvent('qb-weathersync:server:toggleBlackout')
+    Wait(math.random(30000, 60000))
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    end
 end)
 
 -------------------- Tsunami Showcase  --------------------
@@ -129,6 +147,7 @@ RegisterNetEvent('strez:client:TsunamiShowcase', function(text)
         lib.notify({ description = 'Stage 2/15min Restart: Will get a Weather Alert letting everyone know the weather took a turn and is now RAINING', duration = 15000,type = 'info', position = 'top-right'})
     end
     TriggerServerEvent('qb-weathersync:server:setWeather', 'RAIN')
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.2)
     Wait(math.random(15000, 30000))
     if Config.Showcase == 'qb' then
         TriggerEvent('QBCore:Notify', 'Stage 3/5min Restart: Will get a Weather Alert letting everyone know the weather took a turn and is now THUNDER', 'success', 15000)
@@ -138,21 +157,43 @@ RegisterNetEvent('strez:client:TsunamiShowcase', function(text)
     TriggerServerEvent('qb-weathersync:server:setWeather', 'THUNDER')
     Wait(math.random(15000, 30000))
     if Config.Showcase == 'qb' then
-        TriggerEvent('QBCore:Notify', 'Stage 3/5min Restart: Will play a global warning sound to alert all players Tsunami is coming get to high ground (water rising)', 'success', 15000)
+        TriggerEvent('QBCore:Notify', 'Stage 3/5min Restart: Will play a global warning sound to air siren all players Tsunami is coming get to high ground (water rising)', 'success', 15000)
     elseif Config.Showcase == 'ox' then
-        lib.notify({ description = 'Stage 3/5min Restart: Will play a global warning sound to alert all players Tsunami is coming get to high ground (water rising)', duration = 15000,type = 'info', position = 'top-right'})
+        lib.notify({ description = 'Stage 3/5min Restart: Will play a global warning sound to air siren all players Tsunami is coming get to high ground (water rising)', duration = 15000,type = 'info', position = 'top-right'})
     end
-    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.1)
+
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'AirSiren', 0.5)
     TriggerEvent('strez:raisewater')
-    Wait(math.random(15000, 30000))
-    if Config.Showcase == 'qb' then
-        TriggerEvent('QBCore:Notify', 'Stage 4/1min Restart: Will get a final email warning to get to high ground for safety & BLACKOUT to the city', 'success', 15000)
-    elseif Config.Showcase == 'ox' then
-        lib.notify({ description = 'Stage 4/1min Restart: Will get a final email warning to get to high ground for safety & BLACKOUT to the city', duration = 15000,type = 'info', position = 'top-right'})
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
     end
-    TriggerServerEvent('qb-weathersync:server:toggleBlackout')
+    if Config.Showcase == 'qb' then
+        TriggerEvent('QBCore:Notify', 'Stage 4/1min Restart: Will get a final email warning & air siren alert to warn people get to high ground for safety & BLACKOUT to the city', 'success', 15000)
+    elseif Config.Showcase == 'ox' then
+        lib.notify({ description = 'Stage 4/1min Restart: Will get a final email warning & air siren alert to warn people get to high ground for safety & BLACKOUT to the city', duration = 15000,type = 'info', position = 'top-right'})
+    end
     Wait(math.random(15000, 30000))
-    ExecuteCommand("ensure qb-tsunami")
+    TriggerServerEvent('qb-weathersync:server:toggleBlackout')
+    Wait(math.random(30000, 60000))
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    end
 end)
 
 -------------------- TxAdmin Auto Restart Tsunami --------------------
@@ -168,25 +209,25 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto30', function(text)
     elseif Config.Notify == 'email' then
         if Config.Phone == 'qb' then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Weather Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'qs' then
             TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Weather Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'gks' then
             TriggerServerEvent('gksphone:NewMail', {
-            sender = "City of Los Santos",
-            subject = "Weather Broadcast",
-            message = message,
-            button = {}
-        })
+                sender = "City of Los Santos",
+                subject = "Weather Broadcast",
+                message = message,
+                button = {}
+            })
         end
     end
     Wait(5000)
@@ -196,6 +237,7 @@ end)
 -- 15 Minutes Reminder
 RegisterNetEvent('strez:client:SendMailTsunamiAuto15', function(text)
     Wait(math.random(5000, 15000))
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.2)
     local message = 'We apologize for the inaccurate forecasts earlier, and I understand your concern. It appears that the weather has taken an unexpected turn, and rain is now falling.'
     if Config.Notify == 'qb' then
         TriggerEvent('QBCore:Notify', message, 'success', 15000)
@@ -204,25 +246,25 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto15', function(text)
     elseif Config.Notify == 'email' then
         if Config.Phone == 'qb' then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Weather Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'qs' then
             TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Weather Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'gks' then
-            TriggerServerEvent('gksphone:NewMail', {
-            sender = "City of Los Santos",
-            subject = "Weather Broadcast",
-            message = message,
-            button = {}
-        })
+                TriggerServerEvent('gksphone:NewMail', {
+                sender = "City of Los Santos",
+                subject = "Weather Broadcast",
+                message = message,
+                button = {}
+            })
         end
     end
     Wait(5000)
@@ -232,7 +274,7 @@ end)
 -- 5 Minutes Reminder
 RegisterNetEvent('strez:client:SendMailTsunamiAuto5', function(text)
     local message = 'This is an emergency weather update. A tsunami is predicted to make contact in less than 5 minutes. If you are in a coastal area, it is imperative to take immediate action to move to higher ground and seek safety. Please follow any official alerts, instructions, and evacuation orders issued by local authorities. Stay away from beaches and low-lying areas.'
-    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.1)
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'AirSiren', 0.5)
     Wait(math.random(5000, 15000))
     if Config.Notify == 'qb' then
         TriggerEvent('QBCore:Notify', message, 'success', 15000)
@@ -241,14 +283,14 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto5', function(text)
     elseif Config.Notify == 'email' then
         if Config.Phone == 'qb' then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'qs' then
             TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
@@ -259,21 +301,44 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto5', function(text)
             subject = "Emergency Broadcast",
             message = message,
             button = {}
-        })
+            })
         end
     end
     Wait(math.random(15000, 30000))
     TriggerServerEvent('qb-weathersync:server:setWeather', 'THUNDER')
-    Wait(math.random(15000, 30000))
+    Wait(math.random(30000, 60000))
     TriggerEvent('strez:raisewater')
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyFlood.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    end
     Wait(math.random(15000, 30000))
     TriggerServerEvent('qb-weathersync:server:toggleBlackout')
+    Wait(math.random(30000, 60000))
+    if Config.Water == 'calm' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/CalmWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    elseif Config.Water == 'wavey' then
+        local success = LoadWaterFromPath(GetCurrentResourceName(), 'Water/WaveyWater.xml')
+        local waterQuadCount = GetWaterQuadCount()
+        local calmingQuadCount = GetCalmingQuadCount()
+        local waveQuadCount = GetWaveQuadCount()
+    end
 end)
 
 -- 1 Minutes Reminder
 RegisterNetEvent('strez:client:SendMailTsunamiAuto1', function(text)
-    local message = 'This is an emergency weather update. A tsunami is imminent. If you are in a coastal area, it is imperative to take immediate action to move to higher ground and seek safety. Please follow any official alerts, instructions, and evacuation orders issued by local authorities. Stay away from beaches and low-lying areas.'
-    TriggerEvent('InteractSound_CL:PlayOnOne', 'Alert', 0.1)
+    local message = 'This is an emergency weather update. A tsunami is imminent. If you are in a coastal area, it is imperative to take immediate action to move to higher ground and seek safety. Please follow any official alerts, instructions, and evacuation orders issued by local authorities. Stay away from beaches and low-lying areas.'      
+    TriggerEvent('InteractSound_CL:PlayOnOne', 'AirSiren', 0.5)
     Wait(math.random(5000, 15000))
     if Config.Notify == 'qb' then
         TriggerEvent('QBCore:Notify', message, 'success', 15000)
@@ -282,14 +347,14 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto1', function(text)
     elseif Config.Notify == 'email' then
         if Config.Phone == 'qb' then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
             })
         elseif Config.Phone == 'qs' then
             TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-                sender = 'District of Los Santos',
+                sender = 'City of Los Santos',
                 subject = 'Emergency Broadcast',
                 message =  message,
                 button = {}
@@ -300,7 +365,7 @@ RegisterNetEvent('strez:client:SendMailTsunamiAuto1', function(text)
             subject = "Emergency Broadcast",
             message = message,
             button = {}
-        })
+            })
         end
     end
 end)
@@ -313,11 +378,11 @@ RegisterNetEvent('strez:raisewater', function()
         local waterQuadCount = GetWaterQuadCount()
         local isFlooding = true
 
-        local maxFloodHeight = 29 -- Change this value to set the maximum flood height
+        local maxFloodHeight = 28 -- Change this value to set the maximum flood height
 
-        local increaseRate = 0.1 -- Change this value to increase/decrease the rate at which the water height changes
+        local increaseRate = 0.5 -- Change this value to increase/decrease the rate at which the water height changes
 
-        local threadWait = 500 -- Change this value to increase/decrease the time it takes to reach maxFloodHeight.
+        local threadWait = 1000 -- Change this value to increase/decrease the time it takes to reach maxFloodHeight.
 
         while isFlooding do
             for i = 1, waterQuadCount, 1 do
