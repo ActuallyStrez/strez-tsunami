@@ -3,43 +3,44 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'Strez Tsunami'
+Description 'Strez Tsunami'
 name 'strez-tsunami'
-developer 'ActuallyStrez, Sky, Tofu, JSON-135, QBCore'
-version '4.0'
+developer 'ActuallyStrez, Sky, Tofu, JSON-135, HATE, Les, DJ, QBCore'
+version '4.5'
 lua54 'yes'
 
 shared_scripts {
-    'Config.lua',
+    'config.lua',
     '@ox_lib/init.lua'
 }
 
 client_scripts {
-    'Client.lua'
+    'client.lua'
 }
 
 server_scripts {
-    'Server.lua'
+    'server.lua'
 }
+
 
 files {
-	'Water/CalmFlood.xml',
-    'Water/CalmWater.xml',
-    'Water/WaveyFlood.xml',
-    'Water/WaveyWater.xml'
+	'water/calmflood.xml',
+    'water/calmwater.xml',
+    'water/wavyflood.xml',
+    'water/wavywater.xml'
 }
 
-data_file 'CALMFLOOD_FILE' 'CalmFlood.xml'
-data_file 'CALMWATER_FILE' 'CalmWater.xml'
-data_file 'WAVEYFLOOD_FILE' 'WaveyFlood.xml'
-data_file 'WAVEYWATER_FILE' 'WaveyWater.xml'
+data_file 'calmfloor_file' 'calmflood.xml'
+data_file 'calmwater_file' 'calmwater.xml'
+data_file 'wavyflood_file' 'wavyflood.xml'
+data_file 'wavywater_file' 'wavywater.xml'
 
 escrow_ignore {
-    'Config.lua',
-    'Client.lua',
-    'Server.lua',
-	'CalmFlood.xml',
-    'CalmWater.xml',
-    'WaveyFlood.xml',
-    'WaveyWater.xml'
+    'config.lua',
+    'client.lua',
+    'server.lua',
+	'calmflood.xml',
+    'calmwater.xml',
+    'wavyflood.xml',
+    'wavywater.xml'
 }

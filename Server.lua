@@ -68,3 +68,20 @@ AddEventHandler('txAdmin:events:scheduledRestart', function(eventData)
         TriggerClientEvent('strez:client:SendMailTsunamiAuto1', -1)
     end
 end)
+
+-------------------- LB Phone Send Mail Event --------------------
+
+RegisterNetEvent("strez:server:lb-phone:sendMail", function(data)
+    local phoneNumber = exports["lb-phone"]:GetEquippedPhoneNumber(source)
+
+    local playerMail = exports["lb-phone"]:GetEmailAddress(phoneNumber)
+    local success, id = exports["lb-phone"]:SendMail({
+        to = playerMail,
+        subject = data.subject,
+        message = data.message,
+        attachments = {
+        },
+        actions = {
+        }
+    })
+end)

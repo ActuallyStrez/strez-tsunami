@@ -9,49 +9,38 @@ The script is designed in a 4-tier restarter system
 
 -------------------- Supported Scripts --------------------
 
-Phones:
+Supported Phones Scripts:
 qb-phone
 qs-phone
 gks-phone
-Notifications:
+lb-phone
+yseries-phone
+
+Supported Notifications Scripts:
 QBCore notifications
 ox_lib notifications
+
+Supported Weather Scripts:
+QBCore WeatherSync
+CD_EasyTime
+Renewed_WeatherSync
 
 -------------------- Commands --------------------
 
 /emergencyemail - Send emergency email to everyone
 /announcementemail - Send announcement email to everyone
 /tsunamimanual - 15 minute tsunami warning
-/tsunamishowcase - Shows a complete rundown of the tsunami restart script in a couple of minutes
+/tsunamishowcase - Shows a complete rundown of the tsunami restart script in a couple of minutes (Only uses QB/OX Notifcation & QB/CD/Renewed Weather)
 
--------------------- V2 UPDATE --------------------
+-------------------- V4.5 UPDATE --------------------
 
-– Completely removed screen shake/ped movement
-– Add a 30min Alert
-– added Emergency Alert/Announcement email commands to avoid using txadmin announcements so players can not rush to read.
-
--------------------- V3 UPDATE --------------------
-
-– Now added water level rising system during live schedule restart at 5min warning
-– Added QB/Ox_lib notification config support for people who wish to not use phone emails
-
--------------------- V3.5 UPDATE --------------------
-
-– Added Quasar Phone Email config for event emails also during tsunami restart
-– Added Quasar Phone Email for tsunamimanual & tsunamishowcase & emergencyemail & announcementemail commands
-– Added GKS Phone support for Emails
-– Added tsunamishowcase command to show from start to finish only using NOTIFICATIONS QB/Ox_Lib (With restart command added)
-– Possible fix for locals driving/swimming underwater (Still needs more testing)
-
--------------------- V4 UPDATE --------------------
-
-– Finally fixed water starting levels, This should now solve all issues with IPLS/MLO/Lakes/Pools should start with default water
-- Now using both Flood.xml & Water.xml files to help solve water IPL/Swimming issues
-- Moved Alert sound to 15minute alert to help players know that incoming TSunami
-- Added AirSiren sound to 5minute alert to help warn players the water is headed on land
-- Added Config.Water for 'calm' & 'wavey'
-- Calm will allow vehicles to still drive around Legion Square/MRPD/Alta Street Apartment Stairs
-- Wavey you will have a big struggle to walk around anywhere near these areas Legion Square/MRPD/Alta Street Apartment Stairs
+- Fixed Typos
+- Added Weather Config
+- Added CD_Easytime
+- Added Renewed-Weathersync
+- Added LB Phone Support
+- Added YSeries Phone Support
+- Added Message Config (Easier way for people to change message alerts)
 
 -------------------- BUGS & ISSUES & INFORMATION --------------------
 
@@ -62,9 +51,9 @@ ox_lib notifications
 - Server will need to restart after each Tsunami to reset water levels back to default sea level when using TsunamiShowcase command
 - Place AirSiren/Alert into 'interact-sound'
 - Delete the Sounds folder once done
-- Palmer-Taylor Power Station (East of Island) has a water quad missing during calm water config but not on wavey, Can't seem to find the solution (Will fix ASAP)
+- Palmer-Taylor Power Station (East of Island) has a water quad missing during calm water config but not on wavy, Can't seem to find the solution (Will fix ASAP)
 
 
 -------------------- CREDITS --------------------
-Thanks from the following Developers: Skye - Tofu - JSON-135
+Thanks from the following Developers Help: Sky, Tofu, JSON-135, HATE, Les, DJ
 P.S. Thank you for all the love and support given for this script. Strez
